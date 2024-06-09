@@ -1,0 +1,27 @@
+/vendor/
+# Composer dependency directories
+
+/composer.lock
+# Lock file for Composer dependencies
+
+/.env
+# Environment variables file
+
+/node_modules/
+# Node.js dependency directories (if you use Node.js for some parts of your project)
+
+/*.log
+# Log files
+
+/tmp/
+/cache/
+/storage/logs/
+/storage/framework/sessions/
+/storage/framework/views/
+/storage/framework/cache/
+/storage/framework/testing/
+# Temporary and cache directories
+
+/coverage/
+/.DS_Store
+# Coverage reports and system files
