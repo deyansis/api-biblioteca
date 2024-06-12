@@ -21,18 +21,30 @@ function create_table_user(): void
         'password' => 'VARCHAR(255)',
     ];
 
-    create_table_orm('users', $columns);
+    create_table_orm('user', $columns);
 }
+
+function create_table_role(): void
+{
+    $columns = [
+        'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
+        'role' => "VARCHAR(255)",
+    ];
+
+    create_table_orm('role', $columns);
+
+}
+
 
 function create_table_user_roles(): void
 {
     $columns = [
         'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
-        'user_id' => 'INT',
-        'role' => "ENUM('public', 'admin')",
+        'role_id' => "INT",
+        'user_id' => "INT"
     ];
 
-    create_table_orm('user_roles', $columns);
-
-    add_foreign_key('user_roles', 'user_id', 'users', 'id');
+    create_table_orm('user_role', $columns);
+    add_foreign_key(table:"user_role",column:"role_id",foreignTable:"role",foreignColumn:"id");
+    add_foreign_key(table:"user_role",column:"user_id",foreignTable:"user",foreignColumn:"id");
 }

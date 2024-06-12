@@ -54,8 +54,10 @@ class UserRepository  implements IUserRepository
 
             ORM::get_db()->commit();
 
+
             return $lastUserId;
         } catch (PDOException $e) {
+            
             throw new Exception("Error de servidor: " . $e->getMessage());
         }
     }

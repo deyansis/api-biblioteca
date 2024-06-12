@@ -3,6 +3,7 @@
 require_once BASE_PATH . 'src/orm/tables.php';
 
 use function App\Orm\create_table_user;
+use function App\Orm\create_table_role;
 use function App\Orm\create_table_user_roles;
 
 
@@ -19,4 +20,5 @@ ORM::configure('driver_options', [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf
 
 // creando tablas
 create_table_user();
+create_table_role();
 create_table_user_roles();
