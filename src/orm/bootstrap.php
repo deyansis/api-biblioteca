@@ -1,8 +1,9 @@
 <?php
 
-require_once BASE_PATH . 'src/models/user/user.repository.php';
+require_once BASE_PATH . 'src/orm/tables.php';
 
-use App\Models\UserRepository as UserRepository;
+use function App\Orm\create_table_user;
+use function App\Orm\create_table_user_roles;
 
 
 $dbHost = $_ENV['DB_HOST'];
@@ -17,4 +18,5 @@ ORM::configure('password', $dbPass);
 ORM::configure('driver_options', [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
 
 // creando tablas
-UserRepository::create_table();
+create_table_user();
+create_table_user_roles();
