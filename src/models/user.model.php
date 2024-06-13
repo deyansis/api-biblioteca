@@ -17,15 +17,5 @@ class User
     ) {
     }
 
-    public function user_without_password(): array
-    {
-        return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'apellido_materno' => $this->apellido_materno,
-            'apellido_paterno' => $this->apellido_paterno,
-            'email' => $this->email,
-        ];
-    }
 };
 

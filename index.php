@@ -12,9 +12,9 @@ require_once BASE_PATH . 'src/orm/bootstrap.php';
 
 // Routes
 require_once BASE_PATH . 'src/routes/user.route.php';
-require_once BASE_PATH . 'src/routes/login.route.php';
+require_once BASE_PATH . 'src/routes/admin.route.php';
 
-// Painga de inicio
+// Pagina de inicio
 Flight::route('/', function () {
     require_once BASE_PATH . 'src/pages/home.page.php';
 });

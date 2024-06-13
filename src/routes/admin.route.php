@@ -11,7 +11,6 @@ use App\Services\User_Services;
 use function App\Utils\validateRequiredFields;
 use function App\Utils\validateRequiredFieldsFromClass;
 
-
 Flight::route('POST /user/create', function () {
 
     try {
@@ -37,14 +36,13 @@ Flight::route('POST /user/create', function () {
             password: $data['password']
         );
 
-        $user_id = User_Services::create_user(user_data: $user, rol: 'public');
+        $user_id = User_Services::create_user(user_data: $user, rol: 'admin');
 
         Flight::json([
             'status' => 'success',
             'message' => 'Usuario creado exitosamente.',
             'data' => ['user_id' => $user_id]
         ]);
-
     } catch (Exception $e) {
         Flight::json([
             'status' => 'error',
@@ -54,31 +52,7 @@ Flight::route('POST /user/create', function () {
 });
 
 
-
-Flight::route('GET /user/@id', function (string $id) {
-
-    try {
-
-        $user = User_Services::find_by_id($id);
-
-        Flight::json([
-            'status' => 'success',
-            'message' => 'Usuario encontrado.',
-            'data' => ['user' => $user]
-        ]);
-
-    } catch (Exception $e) {
-
-
-        Flight::json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
-
-
-Flight::route('POST /user/login', function () {
+Flight::route('POST /admin/login', function () {
 
     try {
         $request = Flight::request();
@@ -95,7 +69,7 @@ Flight::route('POST /user/login', function () {
             return;
         }
 
-        $user = User_Services::login(email: $data['email'], password: $data['password'], rol: 'public');
+        $user = User_Services::login(email: $data['email'], password: $data['password'], rol: 'admin');
 
 
         Flight::json([
@@ -103,27 +77,6 @@ Flight::route('POST /user/login', function () {
             'message' => 'Usuario autenticado exitosamente.',
             'data' => ['user' => $user]
         ]);
-
-    } catch (Exception $e) {
-        Flight::json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-        return;
-    }
-});
-
-
-Flight::route('POST /user/reset_password', function () {
-    try {
-       
-
-
-        Flight::json([
-            'status' => 'success',
-            'message' => 'Cambio de contraseña de usuario exitosa.'
-        ]);
-
     } catch (Exception $e) {
         Flight::json([
             'status' => 'error',

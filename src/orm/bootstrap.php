@@ -22,3 +22,20 @@ ORM::configure('driver_options', [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf
 create_table_user();
 create_table_role();
 create_table_user_roles();
+
+
+// datos iniciales
+// Función para verificar y crear datos iniciales
+function create_initial_role($roleName)
+{
+    $existingRole = ORM::for_table('role')->where('role', $roleName)->find_one();
+    if (!$existingRole) {
+        $role = ORM::for_table('role')->create();
+        $role->role = $roleName;
+        $role->save();
+    } 
+}
+
+// Crear roles iniciales si no existen
+create_initial_role('public');
+create_initial_role('admin');
