@@ -2,9 +2,13 @@
 
 require_once BASE_PATH . 'src/orm/tables.php';
 
+use function App\Orm\create_table_recovery_password;
 use function App\Orm\create_table_user;
 use function App\Orm\create_table_role;
 use function App\Orm\create_table_user_roles;
+use function App\Orm\create_table_documento;
+use function App\Orm\create_table_tipo_documento;
+use function App\Orm\create_table_doc_tipo;
 
 
 $dbHost = $_ENV['DB_HOST'];
@@ -22,20 +26,31 @@ ORM::configure('driver_options', [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf
 create_table_user();
 create_table_role();
 create_table_user_roles();
+create_table_recovery_password();
+create_table_tipo_documento();
+create_table_documento();
 
 
-// datos iniciales
-// Función para verificar y crear datos iniciales
-function create_initial_role($roleName)
+function create_initial_catalog_entry($table, $field, $value)
 {
-    $existingRole = ORM::for_table('role')->where('role', $roleName)->find_one();
-    if (!$existingRole) {
-        $role = ORM::for_table('role')->create();
-        $role->role = $roleName;
-        $role->save();
+    $existingEntry = ORM::for_table($table)->where($field, $value)->find_one();
+    if (!$existingEntry) {
+        $entry = ORM::for_table($table)->create();
+        $entry->$field = $value;
+        $entry->save();
     } 
 }
 
-// Crear roles iniciales si no existen
-create_initial_role('public');
-create_initial_role('admin');
+
+// Role Categories
+create_initial_catalog_entry(table:'role',field:'role',value:'public');
+create_initial_catalog_entry(table:'role',field:'role',value:'admin');
+
+// Tipo Documento Categories
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'MONOGRAFIA');
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'ENSAYO');
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'TRABAJO DE INVESTIGACION');
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'INFORME ACADEMICO');
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'TRABAJO ESTADISTICO');
+create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'INVESTIGACION DE ACCION');
+

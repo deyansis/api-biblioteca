@@ -11,7 +11,8 @@ use App\Services\User_Services;
 use function App\Utils\validateRequiredFields;
 use function App\Utils\validateRequiredFieldsFromClass;
 
-Flight::route('POST /user/create', function () {
+
+Flight::route('POST /admin/create', function () {
 
     try {
 

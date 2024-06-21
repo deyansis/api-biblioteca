@@ -46,6 +46,7 @@ class User_Services
             ORM::get_db()->commit();
 
             return $user->id;
+
         } catch (PDOException $e) {
             ORM::get_db()->rollBack();
             throw new Exception("Error de servidor: " . $e->getMessage());
@@ -56,13 +57,13 @@ class User_Services
     public static function find_by_id(string $id)
     {
         try {
-            $user  = ORM::for_table('user')->find_one($id);
+            $user = ORM::for_table('user')->find_one($id);
 
             if (!$user) {
                 throw new Exception("Usuario no encontrado");
             }
 
-            $user_result  = [
+            $user_result = [
                 'id' => $user->id,
                 'nombre' => $user->nombre,
                 'apellido_materno' => $user->apellido_materno,
@@ -87,7 +88,7 @@ class User_Services
                 throw new Exception("Usuario no encontrado");
             }
 
-            $user_result  = [
+            $user_result = [
                 'id' => $user->id,
                 'nombre' => $user->nombre,
                 'apellido_materno' => $user->apellido_materno,
@@ -102,7 +103,7 @@ class User_Services
         }
     }
 
-    
+
     public static function login(string $email, string $password, string $rol)
     {
         try {
@@ -125,10 +126,10 @@ class User_Services
                 ->find_one();
 
             if (!$user_role || $user_role->role !== $rol) {
-                return ['error' => 'No tienes permiso para acceder a este recurso'];
+                throw new Exception("No tienes permisos para ingresar");
             }
 
-            $user_result  = [
+            $user_result = [
                 'id' => $user->id,
                 'nombre' => $user->nombre,
                 'apellido_materno' => $user->apellido_materno,
@@ -141,6 +142,54 @@ class User_Services
             throw new Exception("Error de servidor: " . $e->getMessage());
         }
     }
+
+
+    public static function reset_password(string $newpassword, string $idRecovery)
+    {
+        try {
+            
+
+
+            $encrypted_password = PasswordUtil::encryptPassword($newpassword);
+
+            $code = ORM::for_table('recovery_password')->find_one(intval($idRecovery));
+
+            if (!$code) {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            $user = ORM::for_table('user')->where('email', $code->email)->find_one();
+            $user->set('password', $encrypted_password);
+            $user->save();
+
+            return $user->id;
+
+        } catch (PDOException $e) {
+            throw new Exception("Error de servidor: " . $e->getMessage());
+        }
+    }
+
+
+
+    public static function generate_code_recovery(string $code, string $email)
+    {
+
+        try {
+
+
+            $code_recovery = ORM::for_table('recovery_password')->create();
+            $code_recovery->email = $email;
+            $code_recovery->code = $code;
+            $code_recovery->save();
+
+            return $code_recovery->id;
+        } catch (PDOException $e) {
+            throw new Exception("Error de servidor: " . $e->getMessage());
+        }
+
+
+    }
+
 }
 
 
