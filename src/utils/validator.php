@@ -55,3 +55,8 @@ function validateEmailValid($email){
 
     return preg_match($regex, $email);
 }
+
+function validateEstado($estado) {
+    $allowedEstados = ['revision', 'rechazado', 'aprobado'];
+    return in_array($estado, $allowedEstados);
+}

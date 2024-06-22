@@ -66,10 +66,22 @@ function create_table_tipo_documento(): void
 {
     $columns = [
         'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
-        'tipo_documento' => "VARCHAR(120)",
+        'tipo_documento' => "VARCHAR(120) UNIQUE",
     ];
 
     create_table_orm('tipo_documento', $columns);
+}
+
+
+
+function create_table_carrera(): void
+{
+    $columns = [
+        'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
+        'carrera' => "VARCHAR(120) UNIQUE",
+    ];
+
+    create_table_orm('carrera', $columns);
 }
 
 
@@ -79,17 +91,31 @@ function create_table_documento(): void
         'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
         'autor' => "VARCHAR(120)",
         'nombre_archivo' => "VARCHAR(255)",
-        'year' => "DATE",
+        'year' => "DATETIME",
+        'estado' => "VARCHAR(120)",
         'archivo_base64' => "MEDIUMTEXT",
         'user_id' => 'INT ',
+        'carrera_id' => 'INT',
         'tipo_documento_id' => 'INT ',
-
     ];
 
     create_table_orm('documento', $columns);
     add_foreign_key(table:"documento",column:"user_id",foreignTable:"user",foreignColumn:"id");
     add_foreign_key(table:"documento",column:"tipo_documento_id",foreignTable:"tipo_documento",foreignColumn:"id");
+    add_foreign_key(table:"documento",column:"carrera_id",foreignTable:"carrera",foreignColumn:"id");
 }
 
+function create_table_comentario(): void
+{
+    $columns = [
+        'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
+        'comentario' => "VARCHAR(255)",
+        'documento_id' => 'INT',
+        'user_id' => 'INT'
+    ];
 
+    create_table_orm('comentario', $columns);
+    add_foreign_key(table:"comentario",column:"documento_id",foreignTable:"documento",foreignColumn:"id");
+    add_foreign_key(table:"comentario",column:"user_id",foreignTable:"user",foreignColumn:"id");
+}
 

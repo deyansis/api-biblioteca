@@ -16,6 +16,9 @@ require_once BASE_PATH . 'src/orm/bootstrap.php';
 // Routes
 require_once BASE_PATH . 'src/routes/user.route.php';
 require_once BASE_PATH . 'src/routes/admin.route.php';
+require_once BASE_PATH . 'src/routes/documento.route.php';
+require_once BASE_PATH . 'src/routes/carrera.route.php';
+require_once BASE_PATH . 'src/routes/comentario.route.php';
 
 
 

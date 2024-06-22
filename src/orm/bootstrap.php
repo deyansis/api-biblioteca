@@ -8,7 +8,8 @@ use function App\Orm\create_table_role;
 use function App\Orm\create_table_user_roles;
 use function App\Orm\create_table_documento;
 use function App\Orm\create_table_tipo_documento;
-use function App\Orm\create_table_doc_tipo;
+use function App\Orm\create_table_carrera;
+use function App\Orm\create_table_comentario;
 
 
 $dbHost = $_ENV['DB_HOST'];
@@ -28,7 +29,9 @@ create_table_role();
 create_table_user_roles();
 create_table_recovery_password();
 create_table_tipo_documento();
+create_table_carrera();
 create_table_documento();
+create_table_comentario();
 
 
 function create_initial_catalog_entry($table, $field, $value)
@@ -47,10 +50,10 @@ create_initial_catalog_entry(table:'role',field:'role',value:'public');
 create_initial_catalog_entry(table:'role',field:'role',value:'admin');
 
 // Tipo Documento Categories
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'MONOGRAFIA');
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'ENSAYO');
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'TRABAJO DE INVESTIGACION');
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'INFORME ACADEMICO');
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'TRABAJO ESTADISTICO');
-create_initial_catalog_entry(table:'tipo_documento',field:'tipo_documento',value:'INVESTIGACION DE ACCION');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'monografia');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'ensayo');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'trabajo de investigacion');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'informe academico');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'trabajo estadistico');
+create_initial_catalog_entry(table: 'tipo_documento', field: 'tipo_documento', value: 'investigacion de accion');
 

@@ -10,7 +10,10 @@ class Documento {
         public readonly string $nombre_archivo,
         public readonly string $year,
         public readonly string $archivo_base64,
-        public readonly int $id_user,
+        public readonly int $user_id,
+        public readonly int $carrera_id,
+        public readonly int $tipo_documento_id,
+        public readonly ?string $estado = null,
         public readonly ?int $id = null
     ){}
 }
