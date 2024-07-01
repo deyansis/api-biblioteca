@@ -20,7 +20,7 @@ class Documento_Services
 
         try {
             $tipoDocumentos = ORM::for_table('tipo_documento')->find_many();
-            $result = array_map(fn ($tipoDocumento) => new Tipo_Documento(
+            $result = array_map(fn($tipoDocumento) => new Tipo_Documento(
                 id: $tipoDocumento->id,
                 tipo_documento: $tipoDocumento->tipo_documento
             ), $tipoDocumentos);
@@ -54,11 +54,40 @@ class Documento_Services
         }
     }
 
+    public static function get_documento_by_user_and_id(int $userId, int $tipoDocumentoId): array
+    {
+        try {
+
+            $documentos = ORM::for_table('documento')
+                ->where('user_id', $userId)
+                ->where('tipo_documento_id', $tipoDocumentoId)
+                ->find_many();
+
+
+            $result = array_map(fn($documento) => new Documento(
+                autor: $documento->autor,
+                nombre_archivo: $documento->nombre_archivo,
+                year: $documento->year,
+                archivo_base64: $documento->archivo_base64,
+                user_id: $documento->user_id,
+                carrera_id: $documento->carrera_id,
+                tipo_documento_id: $documento->tipo_documento_id,
+                estado: $documento->estado,
+                id: $documento->id
+            ), $documentos);
+
+            return $result;
+        } catch (PDOException $e) {
+            ORM::get_db()->rollBack();
+            throw new Exception("Error de servidor: " . $e->getMessage());
+        }
+    }
+
     public static function update_estado(int $documento_id, string $estado): string
     {
 
         try {
-    
+
             ORM::get_db()->beginTransaction();
             $documento = ORM::for_table('documento')->find_one($documento_id);
 
@@ -71,7 +100,7 @@ class Documento_Services
 
             ORM::get_db()->commit();
 
-            return (string)$documento->id;
+            return (string) $documento->id;
         } catch (PDOException $e) {
             ORM::get_db()->rollBack();
             throw new Exception("Error de servidor: " . $e->getMessage());

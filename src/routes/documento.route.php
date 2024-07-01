@@ -81,6 +81,24 @@ Flight::route('POST /documento/create', function () {
     }
 });
 
+Flight::route('GET /documento/user/@userId/@tipoDocumentoId', function($userId, $tipoDocumentoId) {
+    try {
+        $documentos = Documento_Services::get_documento_by_user_and_id(userId:(int)$userId, tipoDocumentoId:(int)$tipoDocumentoId);
+
+        Flight::json([
+            'status' => 'success',
+            'message' => 'Lista de Documentos Encontrados.',
+            'data' => ['documentos' => $documentos]
+        ]);
+    } catch (Exception $e) {
+        Flight::json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+        return;
+    }
+});
+
 
 Flight::route('PUT /documento', function () {
 

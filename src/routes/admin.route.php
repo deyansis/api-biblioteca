@@ -3,11 +3,14 @@
 declare(strict_types=1);
 
 require_once 'src/utils/validator.php';
+require_once 'src/utils/password_bcrypt.php';
 require_once 'src/models/user.model.php';
 require_once 'src/services/user.services.php';
 
+
 use App\Models\User;
 use App\Services\User_Services;
+use App\Utils\PasswordUtil;
 use function App\Utils\validateRequiredFields;
 use function App\Utils\validateRequiredFieldsFromClass;
 
@@ -72,12 +75,19 @@ Flight::route('POST /admin/login', function () {
 
         $user = User_Services::login(email: $data['email'], password: $data['password'], rol: 'admin');
 
+        $token = $_ENV['TOKEN_HASH'];
+        $hashedUser = PasswordUtil::hashJson(json:json_encode($user), secretKey:$token);
+
+        setcookie(name:'user', value: $hashedUser, expires_or_options: time() + (86400 * 30), path: "/", domain: "localhost", secure: false, httponly: true); 
+
+        header('Access-Control-Allow-Origin: http://localhost:4322'); 
+        header('Access-Control-Allow-Credentials: true'); 
 
         Flight::json([
             'status' => 'success',
             'message' => 'Usuario autenticado exitosamente.',
-            'data' => ['user' => $user]
         ]);
+
     } catch (Exception $e) {
         Flight::json([
             'status' => 'error',
