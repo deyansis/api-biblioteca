@@ -100,7 +100,29 @@ Flight::route('GET /documento/user/@userId/@tipoDocumentoId', function($userId, 
 });
 
 
-Flight::route('PUT /documento', function () {
+
+Flight::route('GET /documento/all', function () {
+
+    try {
+
+        $documentos = Documento_Services::get_all_documentos();
+
+        Flight::json([
+            'status' => 'success',
+            'message' => 'Lista de Documentos Encontrados.',
+            'data' => ['documentos' => $documentos]
+        ]);
+    } catch (Exception $e) {
+        Flight::json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+        return;
+    }
+
+});
+
+Flight::route('PATCH /documento/estado', function() {
 
     try {
 
@@ -119,6 +141,7 @@ Flight::route('PUT /documento', function () {
             return;
         }
 
+        
         if (!validateEstado($data['estado'])) {
             Flight::json([
                 'status' => 'error',
@@ -127,14 +150,14 @@ Flight::route('PUT /documento', function () {
             return;
         }
 
-
-        $documento_id = Documento_Services::update_estado(documento_id: (int)$data['documento_id'] , estado: $data['estado']);
+        $documento_id = Documento_Services::update_estado(documento_id: (int)$data['documento_id'], estado: $data['estado']);
 
         Flight::json([
             'status' => 'success',
             'message' => 'Documento actualizado exitosamente.',
             'data' => ['documento_id' => $documento_id]
         ]);
+
     } catch (Exception $e) {
         Flight::json([
             'status' => 'error',

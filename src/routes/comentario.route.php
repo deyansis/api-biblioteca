@@ -33,8 +33,7 @@ Flight::route('POST /comentario/create', function () {
 
         $comentario = new Comentario(
             comentario: $data['comentario'],
-            documento_id: (int)$data['documento_id'],
-            user_id: (int)$data['user_id']
+            nombre_usuario: $data['nombre_usuario']
         );
 
         $comentario_id = Comentario_Services::create_comentario(comentario_data: $comentario);
@@ -45,6 +44,26 @@ Flight::route('POST /comentario/create', function () {
             'data' => ['comentario_id' => $comentario_id]
         ]);
 
+    } catch (Exception $e) {
+        Flight::json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
+Flight::route('GET /comentario/all', function () {
+
+    try {
+
+        $comentarios = Comentario_Services::get_all_comentarios();
+
+        Flight::json([
+            'status' => 'success',
+            'message' => 'Lista de Comentarios Encontrado.',
+            'data' => ['comentarios' => $comentarios]
+        ]);
+     
     } catch (Exception $e) {
         Flight::json([
             'status' => 'error',

@@ -110,12 +110,9 @@ function create_table_comentario(): void
     $columns = [
         'id' => 'INT PRIMARY KEY AUTO_INCREMENT',
         'comentario' => "VARCHAR(255)",
-        'documento_id' => 'INT',
-        'user_id' => 'INT'
+        'nombre_usuario' => "VARCHAR(255)",
     ];
 
     create_table_orm('comentario', $columns);
-    add_foreign_key(table:"comentario",column:"documento_id",foreignTable:"documento",foreignColumn:"id");
-    add_foreign_key(table:"comentario",column:"user_id",foreignTable:"user",foreignColumn:"id");
 }
 

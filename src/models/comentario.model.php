@@ -7,8 +7,7 @@ namespace App\Models;
 class Comentario {
     public function __construct(
         public readonly string $comentario,
-        public readonly int $documento_id,
-        public readonly int $user_id,
+        public readonly string $nombre_usuario,
         public readonly ?int $id = null
     ){}
 }

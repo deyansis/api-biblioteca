@@ -106,4 +106,25 @@ class Documento_Services
             throw new Exception("Error de servidor: " . $e->getMessage());
         }
     }
+
+    public static function get_all_documentos(): array
+    {
+        try {
+            $documentos = ORM::for_table('documento')->find_many();
+            $result = array_map(fn($documento) => new Documento(
+                autor: $documento->autor,
+                nombre_archivo: $documento->nombre_archivo,
+                year: $documento->year,
+                archivo_base64: $documento->archivo_base64,
+                user_id: $documento->user_id,
+                carrera_id: $documento->carrera_id,
+                tipo_documento_id: $documento->tipo_documento_id,
+                estado: $documento->estado,
+                id: $documento->id
+            ), $documentos);
+            return $result;
+        } catch (PDOException $e) {
+            throw new Exception("Error de servidor: " . $e->getMessage());
+        }
+    }
 }
